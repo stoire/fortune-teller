@@ -1,0 +1,18 @@
+{
+	"name": "FortuneTeller",
+	"version": "1.0.0",
+	"description": "The one who knows about (SD) cards",
+	"keywords": "conversions, arduino, time",
+	"authors": [{
+		"maintainer": true,
+		"name": "Bruno Peixoto",
+		"email": "brunolnetto@gmail.com"
+	}],
+	"repository": {
+		"url": "https://github.com/brunolnetto/fortuneteller.git",
+		"type": "git"
+	},
+	"license": "mpich2 License",
+	"frameworks": "arduino",
+	"platforms": "*"
+}
