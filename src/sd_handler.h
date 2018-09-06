@@ -1,4 +1,4 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include <SD.h>
 #include <SPI.h>
 
@@ -8,18 +8,20 @@ using namespace std;
 
 class SDHandler {
   public:
-    SDHandler(int pin_, String filename_);
+    SDHandler(int pin_);
     
     void begin();
     void open(int = FILE_READ);
     void close();
-    bool delete_file();
+    bool delf(String);
     
     void set_pin(int);
     void set_name(String);
     File& getf();
     int get_pin();
     String get_name();
+    void setfname(String);
+    String getfname();
 
   private:
     long int size();
@@ -27,7 +29,7 @@ class SDHandler {
   protected:
     File file;
 
-  private:
+  protected:
     long int line_num;
     String filename;
     int pin;
@@ -36,51 +38,59 @@ class SDHandler {
 class SDWriter : public SDHandler {
 
   public:
-    SDWriter() : SDHandler(PINO_CARTAO_SD, RAIZ_SD) {};
-    SDWriter(int pin_, String filename_) : SDHandler(pin_, filename) {};
+    SDWriter() : SDHandler(SD_PIN) {};
+    SDWriter(int pin_) : SDHandler(pin_) {};
 
   public:
-    template <typename T, size_t N> void write_ln(const T (&msg)[N]){ 
-      open(FILE_READ);  
+    template <typename T, size_t N> void write_ln(const T (&msg)[N], String to){ 
+      filename = to;
+      open(FILE_WRITE);
       file.println(msg, N);
       close();
     }
-    template <typename T> void write_ln(const T* msg, size_t size){ 
+    template <typename T> void write_ln(const T* msg, size_t size, String to){ 
+      filename = to;
       open(FILE_WRITE);
       file.println(msg, size);
       close();
     }
-    template <typename TString> void write_ln(const TString msg){ 
+    template <typename TString> void write_ln(const TString msg, String to){ 
+      filename = to;
       open(FILE_WRITE);
-      file.println(msg);
+      file.println(msg, to);
+      close();
     }
 
-    template <typename T, size_t N> void write(const T (&msg)[N]){ 
+    template <typename T, size_t N> void write(const T (&msg)[N], String to){ 
+      filename = to;
       open(FILE_WRITE);
       file.print(msg, N);
       close();
     }
-    template <typename T> void write(const T* msg, size_t size){
+    template <typename T> void write(const T* msg, size_t size, String to){
+      filename = to;
       open(FILE_WRITE);
       file.print(msg, size);
       close();  
     }
-    template <typename TString> void write(const TString msg){
-      write(FILE_WRITE);
+    template <typename TString> void write(TString msg, String to){
+      filename = to;
+      //Serial.println(to);
+      open(FILE_WRITE);
       file.print(msg);
       close();
     }
 
   public:
-    void mimic(ManipuladorSD);
+    void mimic(SDHandler);
 };
 
 
 class SDReader : public SDHandler {
   public:
-    SDReader() : SDHandler(DS_PIN, ROOT) {};
-    SDReader(int pin_, String filename) : SDHandler(pin_, filename) {};
+    SDReader() : SDHandler(SD_PIN) {};
+    SDReader(int pin_) : SDHandler(pin_) {};
     
-    int readint();
-    String readfile();
+    int readint(String);
+    String readfile(String);
 };

@@ -1,27 +1,17 @@
 #ifndef SD_HANDLERS_H
 #define SD_HANDLERS_H
 
-#include "Arduino.h"
-
 #include "sd_handler.h"
-#include "einstein.h"
-#include "helpers_serial.h"
+#include "converters/fundamental.h"
 
-SDHandler::SDHandler(int pino_, 
-                             String nome_do_arquivo_) : 
-                             n_linhas(0), nome_do_arquivo(nome_do_arquivo_), 
-                             pino(pino_) {
+SDHandler::SDHandler(int pin_) : 
+                     line_num(0), 
+                     pin(pin_) {
 
-
-    Serial.begin(9600);
-    Serial.println(now());                     
-    // TO FIX: wait for fortuneteller
+    // TO FIX: wait for courier
     //String msg = "[" + agora() + "]" + "[" + "Log" + n_chars(' ', 7) + "]" + ": " + msg;
     //imprime_em_serial_ln(msg);                
-    
-    //                                                     ^-- MAX_TAMANHO_EVENTO - tamanho("Log") 
-    //                                                         path(MAX_TAMANHO_EVENTO): /lib/midia/definicoes.h
-    
+        
     /*
     LoggerSerial logger(Serial);
     Log log_(msg);
@@ -30,9 +20,9 @@ SDHandler::SDHandler(int pino_,
 }
 
 void SDHandler::begin(){
-  SD.begin(pino);
+  SD.begin(pin);
 
-  // TO FIX: wait for fortuneteller
+  // TO FIX: wait for courier
   // String init_status = SD.begin(pino) ? SUCESS_OPEN_MSG : FAILED_OPEN_MSG;
   // String tipo = (init_status == SUCESSO_ABRIR) ? "Log" : "ErroR";
   // String log_ = "[" + agora() + "]" + "[" + tipo + n_chars(' ', 10 - tipo.length()) + "]" + ": " + init_status;
@@ -44,15 +34,15 @@ void SDHandler::set_pin(int pin_){
   pin = pin_;
 }
 
-void SDHandler::set_filename(String filename_){
+void SDHandler::setfname(String filename_){
   filename = filename_;
 }
 
-int SDHandler::get_pino(){
-  return pino;
+int SDHandler::get_pin(){
+  return pin;
 }
 
-String SDHandler::get_filename(){
+String SDHandler::getfname(){
   return filename;
 }
 
@@ -64,32 +54,30 @@ void SDHandler::close(){
     file.close();
 }
 
-bool SDHandler::delete_file(){
+bool SDHandler::delf(String fname){
   bool deleted, exists;
-  exists = SD.exists(filename);
-  deleted = SD.remove(filename);
+  exists = SD.exists(fname);
+  deleted = SD.remove(fname);
     
   return exists && deleted;
 }
 
 long int SDHandler::size(){
-    if(line_num == 0) {
-        open();
-        while(file.available()){
-          file.read();
-          line_num++;
-        }
-        close();
+    open();
+    while(file.available()){
+      file.read();
+      line_num++;
+    }
+    close();
 
-        return line_num;
-    } else return line_num;
+    return line_num;
 }
 
-File& SDHandler::get_file(){
+File& SDHandler::getf(){
   return file;
 }
 
-void SDWriter::mimic(HandlerSD m){
+void SDWriter::mimic(SDHandler m){
 /* Copy other HandlerSD's properties
   Input:
     - [HandlerSD]: HandlerSD copied to be
@@ -98,24 +86,27 @@ void SDWriter::mimic(HandlerSD m){
 */
 
   set_pin(m.get_pin());
-  set_filename(m.get_filename());
+  setfname(m.getfname());
 }
 
-int SDReader::read_int(){
+int SDReader::readint(String from){
 /* Reads an int at a time 
   Input:
     - [void]: -
   Output:
     - [int]: read int
 */
+  filename = from;
   return file.read();
 }
 
-String SDReader::readfile(){
+String SDReader::readfile(String from){
   String content("");
 
-  open(); 
-  content += "------\n" ;
+  filename = from;
+
+  open();
+  content += "------\n";
   content += file.name();
   content += ":\n";
 
