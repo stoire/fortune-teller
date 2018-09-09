@@ -1,0 +1,40 @@
+{
+    "license": "mpich2 License", 
+    "name": "Einstein", 
+    "repository": {
+        "url": "https://github.com/brunolnetto/einstein.git", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelavr", 
+        "atmelsam", 
+        "espressif32", 
+        "espressif8266", 
+        "intel_arc32", 
+        "microchippic32", 
+        "nordicnrf51", 
+        "nordicnrf52", 
+        "ststm32", 
+        "teensy", 
+        "timsp430"
+    ], 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "1.1.0", 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Bruno Peixoto", 
+            "url": null, 
+            "email": "brunolnetto@gmail.com"
+        }
+    ], 
+    "keywords": [
+        "conversions", 
+        "time", 
+        "arduino"
+    ], 
+    "id": 5717, 
+    "description": "A library for handling time"
+}
