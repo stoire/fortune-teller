@@ -49,13 +49,15 @@ class SDWriter : public SDHandler {
       file.println(msg, N);
       close();
     }
+
     template <typename T> void write_ln(const T* msg, size_t size, String to){ 
       filename = to;
       open(FILE_WRITE);
       file.println(msg, size);
       close();
     }
-    template <typename TString> void write_ln(const String msg, String to){ 
+
+    template <typename String> void write_ln(String msg, String to){ 
       filename = to;
       open(FILE_WRITE);
       file.println(msg, to);
@@ -68,13 +70,15 @@ class SDWriter : public SDHandler {
       file.print(msg, N);
       close();
     }
+    
     template <typename T> void write(const T* msg, size_t size, String to){
       filename = to;
       open(FILE_WRITE);
       file.print(msg, size);
       close();  
     }
-    template <typename TString> void write(String msg, String to){
+    
+    template <typename String> void write(String msg, String to){
       filename = to;
       open(FILE_WRITE);
       file.print(msg);
