@@ -14,14 +14,15 @@ class SDHandler {
     void open(int = FILE_READ);
     void close();
     bool delf(String);
-    
-    void set_pin(int);
-    void set_name(String);
     File& getf();
-    int get_pin();
-    String get_name();
     void setfname(String);
     String getfname();
+
+    void set_pin(int);
+    void set_name(String);
+    
+    int get_pin();
+    String get_name();
 
   private:
     long int size();
@@ -54,7 +55,7 @@ class SDWriter : public SDHandler {
       file.println(msg, size);
       close();
     }
-    template <typename TString> void write_ln(const TString msg, String to){ 
+    template <typename TString> void write_ln(const String msg, String to){ 
       filename = to;
       open(FILE_WRITE);
       file.println(msg, to);
@@ -73,9 +74,8 @@ class SDWriter : public SDHandler {
       file.print(msg, size);
       close();  
     }
-    template <typename TString> void write(TString msg, String to){
+    template <typename TString> void write(String msg, String to){
       filename = to;
-      //Serial.println(to);
       open(FILE_WRITE);
       file.print(msg);
       close();

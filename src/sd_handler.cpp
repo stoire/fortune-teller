@@ -24,18 +24,14 @@ void SDHandler::begin(){
 
   // TO FIX: wait for courier
   // String init_status = SD.begin(pino) ? SUCESS_OPEN_MSG : FAILED_OPEN_MSG;
-  // String tipo = (init_status == SUCESSO_ABRIR) ? "Log" : "ErroR";
-  // String log_ = "[" + agora() + "]" + "[" + tipo + n_chars(' ', 10 - tipo.length()) + "]" + ": " + init_status;
+  // String type = (init_status == OPEN_SUCCESS) ? "LOG" : "ERROR";
+  // String log_ = "[" + now() + "]" + "[" + type + n_chars(' ', 10 - type.length()) + "]" + ": " + init_status;
   // imprime_em_serial_ln(log_);
 }
 
 // Gets and sets
 void SDHandler::set_pin(int pin_){
   pin = pin_;
-}
-
-void SDHandler::setfname(String filename_){
-  filename = filename_;
 }
 
 int SDHandler::get_pin(){
@@ -46,12 +42,8 @@ String SDHandler::getfname(){
   return filename;
 }
 
-void SDHandler::open(int handle_type){  
-    file = SD.open(filename, handle_type);
-}
-
-void SDHandler::close(){
-    file.close();
+void SDHandler::setfname(String filename_){
+  filename = filename_;
 }
 
 bool SDHandler::delf(String fname){
@@ -60,6 +52,18 @@ bool SDHandler::delf(String fname){
   deleted = SD.remove(fname);
     
   return exists && deleted;
+}
+
+File& SDHandler::getf(){
+  return file;
+}
+
+void SDHandler::open(int handle_type){  
+    file = SD.open(filename, handle_type);
+}
+
+void SDHandler::close(){
+    file.close();
 }
 
 long int SDHandler::size(){
@@ -71,10 +75,6 @@ long int SDHandler::size(){
     close();
 
     return line_num;
-}
-
-File& SDHandler::getf(){
-  return file;
 }
 
 void SDWriter::mimic(SDHandler m){
