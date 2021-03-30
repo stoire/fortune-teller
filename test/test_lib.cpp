@@ -1,9 +1,8 @@
 #include <unity.h>
+
 #include <Arduino.h>
-
-#include "sd_handler.h"
-#include "utils.h"
-
+#include <sd_handler.h>
+#include <utils.h>
 
 void test_listSD(void) {
     String expected("/\n");    
@@ -31,6 +30,7 @@ void setup() {}
 void loop() {
     UNITY_BEGIN();
     RUN_TEST(test_listSD);
-    RUN_TEST(test_writer);    
+    RUN_TEST(test_writer);
+    cleanSD(); 
     UNITY_END(); 
 }
